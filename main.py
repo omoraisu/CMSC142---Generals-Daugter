@@ -6,29 +6,41 @@ Myra Daitol
 Daenielle Rai Peladas
 """
 
-class File:
-    def __init__(self, name, file_type, file_path):
-        self.name = name
-        self.file_type = file_type
-        self.file_path = file_path
+from abc import ABC, abstractmethod
 
-class Directory:
-    def __init__(self, name, dir_path) -> None:
-        self.name = name
-        self.dir_path = dir_path
+class Node(ABC):
+    def __init__(self):
+        pass
 
-class Node: 
-    def __init__(self, data):
-        self.data = data
-        self.left = None
-        self.right = None
+    def __repr__(self):
+        pass
+
+class File(Node):
+    def __init__(self, name):
+        self.name = name
+        self.file_type = '.txt'
+        self.children = None
+        self.parent = None
+    
+    def __repr__(self):
+        return f'/{self.name}{self.file_type}'
+
+class Directory(Node):
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+        self.parent = None
+    
+    def __repr__(self):
+        return f'/{self.name}'
 
 class Tree: 
     def __init__(self, root):
         self.root = root
     
     def insert(self, data):
-        pass
+        data.parent = self
+        self.root.children.append(data)
 
     def search(self, data):
         pass
@@ -36,41 +48,31 @@ class Tree:
     def delete(self, data):
         pass
 
-class Console:
-    def __init__(self, tree: Tree):
-        self.tree = tree
-
-    def create_directory(self, dir: Directory):
-        pass
-
-    def delete_directory(self, dir: Directory):
-        pass
-
-    def change_directory(self, dir: Directory):
-        pass
+    def print_tree(self):
+        print(self.root)
+        if self.root.children:
+            for child in self.root.children:
+                temp = Tree(child)
+                temp.print_tree()
     
-    def create_file(self, file: File):
-        pass
-    
-    def delete_file(self, file: File):
-        pass
+    # Temp only for testing, needs further modification to print all nodes in correct order 
+    def __repr__(self):
+        return f'{self.root}'
 
-    def edit_file(self, file: File):
-        pass
 
-    def rename_file(self, file: File):
-        pass
+directory = Directory("foo")
+file = File("bar")
+tree = Tree(directory)
+tree.insert(file)
+print(file.parent)
+print("")
+tree.print_tree()
 
-    def move_file(self, file: File):
-        pass
-
-    def copy_file(self, file: File):
-        pass
-
-    def copy_directory(self, dir: Directory):
-        pass
-
-    
+"""
+Resources: 
+File System Tree Implementation - Javascript/Tree Data Structure
+    https://github.com/beforesemicolon/tutorials-files/blob/master/tree-file-system.js 
+"""
 
 
 
